@@ -1,0 +1,30 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`constants > test getDefaultConfigPrefixes 1`] = `
+[
+  "cwf.config.js",
+  "cwf.config.mjs",
+  "cwf.config.ts",
+  "cwf.config.cjs",
+  "cwf.config.mts",
+  "cwf.config.cts",
+  "command-workflow.config.js",
+  "command-workflow.config.mjs",
+  "command-workflow.config.ts",
+  "command-workflow.config.cjs",
+  "command-workflow.config.mts",
+  "command-workflow.config.cts",
+  "command.config.js",
+  "command.config.mjs",
+  "command.config.ts",
+  "command.config.cjs",
+  "command.config.mts",
+  "command.config.cts",
+  "wordflow.config.js",
+  "wordflow.config.mjs",
+  "wordflow.config.ts",
+  "wordflow.config.cjs",
+  "wordflow.config.mts",
+  "wordflow.config.cts",
+]
+`;
