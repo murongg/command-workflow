@@ -7,6 +7,13 @@ describe('describe', () => {
     const config: UserConfig = {
       log: true,
       logLevel: 'info',
+      steps: [{
+        command: 'git tag v#{tag} -m #{message}',
+        tags: {
+          tag: 'tag',
+          message: 'message',
+        },
+      }],
     }
     expect(defineConfig(config)).toMatchSnapshot()
   })
@@ -15,20 +22,25 @@ describe('describe', () => {
     // test default
     const cwd = resolve(__dirname)
     const output = await loadConfigFromFile(undefined, cwd)
-    expect(output).toEqual({
+    const res = {
       log: true,
       logLevel: 'info',
-    })
+      steps: [{
+        command: 'git tag v#{tag} -m #{message}',
+        tags: {
+          tag: 'tag',
+          message: 'message',
+        },
+      }],
+    }
+    expect(output).toEqual(res)
     // test file
     const file2 = resolve(__dirname, 'cwf.config.ts')
     const output2 = await loadConfigFromFile(file2)
-    expect(output2).toEqual({
-      log: true,
-      logLevel: 'info',
-    })
+    expect(output2).toEqual(res)
     // test error
     const file3 = resolve(__dirname, 'command.config.ts')
     const output3 = await loadConfigFromFile(file3)
-    expect(output3).toThrowError()
+    expect(output3).toThrowError(Error)
   })
 })

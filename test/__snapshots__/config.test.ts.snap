@@ -4,5 +4,14 @@ exports[`describe > test defineConfig 1`] = `
 {
   "log": true,
   "logLevel": "info",
+  "steps": [
+    {
+      "command": "git tag v#{tag} -m #{message}",
+      "tags": {
+        "message": "message",
+        "tag": "tag",
+      },
+    },
+  ],
 }
 `;

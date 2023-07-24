@@ -1,6 +1,7 @@
 import { resolve } from 'path'
 import { existsSync } from 'fs'
 import { getDefaultConfigPrefixes } from './constants'
+import type { Step } from './types'
 
 export interface UserConfig {
   /**
@@ -14,6 +15,10 @@ export interface UserConfig {
    */
   logLevel?: 'debug' | 'info' | 'warn' | 'error'
 
+  /**
+   * Steps.
+   */
+  steps: Step[]
 }
 
 export function defineConfig(config: UserConfig): UserConfig
@@ -22,19 +27,22 @@ export function defineConfig(config: UserConfig | Promise<UserConfig>): Promise<
   return config
 }
 
-export async function loadConfigFromFile(configFile?: string, configRoot: string = process.cwd()) {
+export async function loadConfigFromFile(configFile?: string, configRoot: string = process.cwd()): Promise<UserConfig | null> {
   let resolvedPath = ''
-  if (configFile)
+  if (configFile) {
     resolvedPath = resolve(configFile)
-  const configFiles = getDefaultConfigPrefixes()
+  }
+  else {
+    const configFiles = getDefaultConfigPrefixes()
 
-  for (const filename of configFiles) {
-    const filePath = resolve(configRoot, filename)
-    if (!existsSync(filePath))
-      continue
+    for (const filename of configFiles) {
+      const filePath = resolve(configRoot, filename)
+      if (!existsSync(filePath))
+        continue
 
-    resolvedPath = filePath
-    break
+      resolvedPath = filePath
+      break
+    }
   }
 
   try {
