@@ -1,13 +1,12 @@
 import { execSync } from 'child_process'
-import { loadConfigFromFile } from './config'
+import { getConfig } from './config'
 import { parserTemplateTag } from './parser'
+import { createLogger } from './logger'
 
 export async function run() {
-  const config = await loadConfigFromFile()
-  if (!config?.steps)
-    throw new Error('No steps found in config file')
-  if (config && config.steps) {
-    const commands: string[] = []
+  const config = await getConfig()
+  const commands: string[] = []
+  if (config) {
     for (const step of config.steps) {
       const cmd = parserTemplateTag(step.command, step.tags || {})
       commands.push(cmd)
@@ -15,7 +14,7 @@ export async function run() {
         execSync(cmd, { stdio: 'inherit' })
       }
       catch (error) {
-        console.error(error)
+        createLogger(config?.logLevel).error('Run command error.', { error: error as Error, timestamp: true })
       }
     }
   }
