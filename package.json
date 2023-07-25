@@ -53,6 +53,9 @@
     "typecheck": "tsc --noEmit",
     "coverage": "vitest run --coverage"
   },
+  "dependencies": {
+    "picocolors": "^1.0.0"
+  },
   "devDependencies": {
     "@antfu/ni": "^0.21.4",
     "@antfu/utils": "^0.7.4",
@@ -76,8 +79,5 @@
   },
   "lint-staged": {
     "*": "eslint --fix"
-  },
-  "dependencies": {
-    "picocolors": "^1.0.0"
   }
 }
