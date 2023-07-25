@@ -1,5 +1,5 @@
-import { resolve } from 'path'
-import { existsSync } from 'fs'
+import { resolve } from 'node:path'
+import { existsSync } from 'node:fs'
 import { getDefaultConfigPrefixes } from './constants'
 import type { Step } from './types'
 
@@ -44,6 +44,9 @@ export async function loadConfigFromFile(configFile?: string, configRoot: string
       break
     }
   }
+
+  if (!resolvedPath)
+    return null
 
   try {
     const config = await import(resolvedPath)

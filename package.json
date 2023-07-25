@@ -35,6 +35,9 @@
       ]
     }
   },
+  "bin": {
+    "cwf": "bin/run.mjs"
+  },
   "files": [
     "dist"
   ],
@@ -73,5 +76,8 @@
   },
   "lint-staged": {
     "*": "eslint --fix"
+  },
+  "dependencies": {
+    "picocolors": "^1.0.0"
   }
 }

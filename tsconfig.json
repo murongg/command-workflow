@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es2018",
+    "target": "ES2020",
     "module": "esnext",
     "lib": ["esnext"],
     "moduleResolution": "node",
@@ -9,6 +9,10 @@
     "strictNullChecks": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "skipDefaultLibCheck": true
+    "skipDefaultLibCheck": true,
+    "outDir": "dist"
+  },
+  "ts-node": {
+    "esm": true
   }
 }

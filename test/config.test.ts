@@ -42,5 +42,8 @@ describe('describe', () => {
     const file3 = resolve(__dirname, 'command.config.ts')
     const output3 = await loadConfigFromFile(file3)
     expect(output3).toThrowError(Error)
+    // test null
+    const output4 = await loadConfigFromFile()
+    expect(output4).toBe(null)
   })
 })
