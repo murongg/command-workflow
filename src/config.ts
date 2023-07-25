@@ -1,5 +1,6 @@
 import { resolve } from 'node:path'
 import { existsSync } from 'node:fs'
+import { importModule } from 'local-pkg'
 import { getDefaultConfigPrefixes } from './constants'
 import type { Step } from './types'
 import type { LogLevel } from './logger'
@@ -61,7 +62,7 @@ export async function loadConfigFromFile(configFile?: string, configRoot: string
     return null
 
   try {
-    const config = await import(resolvedPath)
+    const config = await importModule(resolvedPath)
     return config.default
   }
   catch (error) {

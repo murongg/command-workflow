@@ -1,6 +1,4 @@
-import { defineConfig } from '../src/config'
-
-export const config = defineConfig({
+export const config = {
   log: true,
   logLevel: 'info',
   steps: [{
@@ -10,6 +8,6 @@ export const config = defineConfig({
       message: 'message',
     },
   }],
-})
+}
 
 export default config

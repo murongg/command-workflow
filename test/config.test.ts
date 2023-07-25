@@ -35,11 +35,11 @@ describe('describe', () => {
     }
     expect(output).toEqual(res)
     // test file
-    const file2 = resolve(__dirname, 'cwf.config.ts')
+    const file2 = resolve(__dirname, 'cwf.config.js')
     const output2 = await loadConfigFromFile(file2)
     expect(output2).toEqual(res)
     // test error
-    const file3 = resolve(__dirname, 'command.config.ts')
+    const file3 = resolve(__dirname, 'command.config.js')
     const output3 = await loadConfigFromFile(file3)
     expect(output3).toThrowError(Error)
     // test null
