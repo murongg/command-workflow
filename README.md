@@ -192,6 +192,16 @@ interface UserConfig {
      */
   logLevel?: LogLevel
   /**
+     * Whether to skip error.
+     * @default false
+     */
+  isSkipError?: boolean
+  /**
+     * When throw error whether to break.
+     * @default false
+     */
+  isThrowErrorBreak?: boolean
+  /**
      * Steps.
      */
   steps: Step[]
@@ -206,4 +216,6 @@ declare function defineConfig(config: Promise<UserConfig>): Promise<UserConfig>
 declare function defineConfig(config: UserConfigMap): UserConfigMap
 declare function defineConfig(config: Promise<UserConfigMap>): Promise<UserConfigMap>
 declare function defineConfig(config: UserConfigFn): UserConfigFn
+
+export { defineConfig }
 ```
