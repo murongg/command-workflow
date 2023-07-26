@@ -11,13 +11,14 @@ import type { StepTags } from './types'
 export function parserTemplateTag(template: string, tags: StepTags): { value: string; tags: Record<string, any> } {
   const tagsMap: Record<string, any> = {}
   const value = template.replace(/#\{(\w+)\}/g, (_, key) => {
-    if (Reflect.has(TAGS_MAP, key)) {
+    if (Reflect.has(TAGS_MAP, key) && !Reflect.has(tags, key)) {
       const val = Reflect.get(TAGS_MAP, key)()
       tagsMap[key] = val
       return val
     }
 
     const value = tags[key]
+
     if (typeof value === 'function') {
       const val = value()
       tagsMap[key] = val
