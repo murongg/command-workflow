@@ -7,5 +7,7 @@ export interface Step {
   tags?: StepTags
   before?: (command: string, tags: Record<string, any>) => string | undefined
   after?: (command: string, buffer: Buffer) => void
+  /// TODO can run command
+  run?: boolean | ((command: string, tags: Record<string, any>) => boolean)
 }
 
