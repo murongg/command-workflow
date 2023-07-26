@@ -35,8 +35,10 @@ async function run(key?: string, configFile?: string, configRoot?: string) {
         step.after?.(cmd, execRes)
       }
       catch (error) {
-        if (!config.default?.isSkipError)
+        if (!config.default?.isSkipError) {
           createLogger(config?.default?.logLevel).error('Run command error.', { error: error as Error, timestamp: true })
+          step.error?.(error as Error)
+        }
         if (config.default?.isThrowErrorBreak)
           break
       }
