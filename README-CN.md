@@ -1,22 +1,19 @@
 <div style="text-align: center;">
   <h1>command-workflow</h1>
-  <p>Configurable command workflow that executes specific tasks based on commands. Simple, flexible, and easily expandable.</p>
-  <p><a href="https://github.com/murongg/command-workflow/blob/main/README.md">English</a>|<a href="https://github.com/murongg/command-workflow/blob/main/README-CN.md">中文文档</a></p>
+  <p>可配置的命令工作流程，根据命令执行特定任务。 简单、灵活且易于扩展。</p>
 </div>
 
 [![NPM version](https://img.shields.io/npm/v/command-workflow?color=a1b858&label=)](https://www.npmjs.com/package/command-workflow)
 
-## Installation
+## 安装
 
 ```bash
 npm install command-workflow -D
 ```
 
-## Usage
+## 使用
 
-### Basic Usage
-
-```bash
+### 基本使用
 
 ```bash
 # create config file
@@ -64,7 +61,7 @@ filename: 1690340590431
 ✨  Done in 1.99s.
 ```
 
-### Advanced Usage
+### 进阶使用
 
 ```bash 
 # create config file
