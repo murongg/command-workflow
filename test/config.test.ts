@@ -5,7 +5,6 @@ import { type UserConfig, defineConfig, getConfig, loadConfigFromFile } from '..
 describe('describe', () => {
   it('test defineConfig', () => {
     const config: UserConfig = {
-      log: true,
       logLevel: 'info',
       steps: [{
         command: 'git tag v#{tag} -m #{message}',
@@ -23,7 +22,6 @@ describe('describe', () => {
     const cwd = resolve(__dirname)
     const output = await loadConfigFromFile(undefined, cwd)
     const res = {
-      log: true,
       logLevel: 'info',
       steps: [{
         command: 'git tag v#{tag} -m #{message}',
@@ -51,7 +49,6 @@ describe('describe', () => {
     const cwd = resolve(__dirname)
     const output = await getConfig(undefined, undefined, cwd)
     const res = {
-      log: true,
       logLevel: 'info',
       steps: [{
         command: 'git tag v#{tag} -m #{message}',
