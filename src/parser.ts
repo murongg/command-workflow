@@ -22,7 +22,7 @@ export function parserTemplateTag(template: string, tags: StepTags): { value: st
     if (typeof value === 'function') {
       const val = value()
       tagsMap[key] = val
-      return value()
+      return val
     }
     tagsMap[key] = value
     return value
