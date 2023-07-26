@@ -111,6 +111,30 @@ filename: 1690340590431
 ✨  Done in 1.99s.
 ```
 
+### Use hooks
+
+- **before:** 在执行命令之前，可以通过一个回调函数对命令进行修改。该回调函数接受命令和标签集合作为参数，并允许在执行时对命令进行修改。一旦回调函数执行完毕，程序将执行回调函数返回的修改后的命令。
+- **after:** 在命令执行后，你可以通过回调函数获取执行的命令和执行结果。回调函数的参数包含命令和执行结果，没有返回值。你可以方便地查看最终执行的命令和相应的执行结果。
+
+```js 
+// cwf.config.js
+export default defineConfig({
+  steps: [{
+    command: 'ls',
+  }, {
+    command: 'touch #{git_user_name}',
+    before: (command, tags) => {
+      console.log('before command: ', command)
+      console.log('before tags: ', tags)
+      return `${command}-murong`
+    },
+    after: (command, exec) => {
+      console.log('after real command: ', command)
+      console.log('after exec: ', exec)
+    }
+  }],
+})
+```
 
 ## 内置 tag
 

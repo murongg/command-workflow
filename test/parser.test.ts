@@ -9,11 +9,11 @@ describe('parser', () => {
       tag: '1.0.0',
       message: '1.0.0',
     }
-    expect(parserTemplateTag(template, tags)).toBe('git tag v1.0.0 -m v1.0.0')
+    expect(parserTemplateTag(template, tags).value).toBe('git tag v1.0.0 -m v1.0.0')
     tags = {
       tag: () => '1.0.0',
       message: () => '1.0.0',
     }
-    expect(parserTemplateTag(template, tags)).toBe('git tag v1.0.0 -m v1.0.0')
+    expect(parserTemplateTag(template, tags).value).toBe('git tag v1.0.0 -m v1.0.0')
   })
 })

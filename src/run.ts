@@ -21,14 +21,18 @@ cli.parse()
 
 async function run(key?: string, configFile?: string, configRoot?: string) {
   const config = await getConfig(key, configFile, configRoot)
-  const commands: string[] = []
   if (config) {
     for (const step of config.default?.steps || []) {
-      const cmd = parserTemplateTag(step.command, step.tags || {})
-      commands.push(cmd)
+      // eslint-disable-next-line prefer-const
+      let { value: cmd, tags } = parserTemplateTag(step.command, step.tags || {})
+      const beforeCmd = step.before?.(cmd, tags)
+      if (beforeCmd)
+        cmd = beforeCmd
+
       createLogger().info(`${colors.cyan('Run command:')} ${colors.green(cmd)}`, { timestamp: true })
       try {
-        execSync(cmd, { stdio: 'inherit' })
+        const execRes = execSync(cmd, { stdio: 'inherit' })
+        step.after?.(cmd, execRes)
       }
       catch (error) {
         createLogger(config?.default?.logLevel).error('Run command error.', { error: error as Error, timestamp: true })

@@ -114,6 +114,31 @@ filename: 1690340590431
 ✨  Done in 1.99s.
 ```
 
+### Use hooks
+
+- **before:** Before executing the command, a callback function can be used to modify the command and tag collection. This callback function takes the command and tag collection as parameters and allows for modifications to the command during execution. Once the callback function has completed, the program will execute the modified command returned by the callback function.
+- **after:** After the command is executed, you can retrieve the executed command and the execution result through a callback function. The callback function takes the command and execution result as parameters, and it does not have a return value. This allows you to conveniently view the final executed command and its corresponding execution result.
+
+```js 
+// cwf.config.js
+export default defineConfig({
+  steps: [{
+    command: 'ls',
+  }, {
+    command: 'touch #{git_user_name}',
+    before: (command, tags) => {
+      console.log('before command: ', command)
+      console.log('before tags: ', tags)
+      return `${command}-murong`
+    },
+    after: (command, exec) => {
+      console.log('after real command: ', command)
+      console.log('after exec: ', exec)
+    }
+  }],
+})
+```
+
 ## Built-in tag
 
 | Tag                             | Description                | Example                                       |
