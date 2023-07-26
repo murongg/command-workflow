@@ -9,17 +9,18 @@ import { createLogger } from './logger'
 const cli = cac('cwf')
 cli
   .version(version)
+  .option('-c, --config <path>', 'Path to config file')
   .help()
 
 cli
-  .command('[key]', 'Run command by key.').action((key) => {
-    run(key)
+  .command('[key]', 'Run command by key.').action((key: string, options) => {
+    run(key, options.config)
   })
 
 cli.parse()
 
-async function run(key?: string) {
-  const config = await getConfig(key)
+async function run(key?: string, configFile?: string, configRoot?: string) {
+  const config = await getConfig(key, configFile, configRoot)
   const commands: string[] = []
   if (config) {
     for (const step of config.default?.steps || []) {
