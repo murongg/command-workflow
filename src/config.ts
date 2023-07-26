@@ -8,11 +8,6 @@ import { createLogger } from './logger'
 
 export interface UserConfig {
   /**
-   * Is output log.
-   * @default true
-   */
-  log?: boolean
-  /**
    * Log level.
    * @default 'info'
    */
