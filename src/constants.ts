@@ -11,7 +11,7 @@ export const DEFAULT_CONFIG_PREFIXES = [
   'cwf',
   'command-workflow',
   'command',
-  'wordflow',
+  'workflow',
 ]
 
 export const getDefaultConfigPrefixes = () => {
