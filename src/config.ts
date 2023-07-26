@@ -5,6 +5,7 @@ import { getDefaultConfigPrefixes } from './constants'
 import type { Step } from './types'
 import type { LogLevel } from './logger'
 import { createLogger } from './logger'
+import { isWindows } from './utils'
 
 export interface UserConfig {
   /**
@@ -65,9 +66,11 @@ export async function loadConfigFromFile(configFile?: string, configRoot: string
       break
     }
   }
-
   if (!resolvedPath)
     return null
+
+  if (isWindows)
+    resolvedPath = `file:///${resolvedPath.replace(/\\/g, '/')}`
 
   try {
     const config = await importModule(resolvedPath)
