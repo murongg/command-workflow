@@ -1,4 +1,4 @@
-import { execSync } from 'child_process'
+import { execSync } from 'node:child_process'
 import colors from 'picocolors'
 import cac from 'cac'
 import { version } from '../package.json'

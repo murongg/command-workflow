@@ -113,3 +113,19 @@ filename: 1690340590431
 11:03:10 AM [CWF] Run command: vim 1690340590431
 ✨  Done in 1.99s.
 ```
+
+## Built-in tag
+
+| Tag                             | Description                | Example                                       |
+| ------------------------------- | -------------------------- | --------------------------------------------- |
+| `#{timestamp}`                  | Timestamp                  | `touch #{timestamp}`                          |
+| `#{current_git_branch}`         | Current git branch         | `git checkout -b #{current_git_branch}`       |
+| `#{current_git_commit}`         | Current git commit hash    | `git commit -m #{current_git_commit}`         |
+| `#{current_git_commit_message}` | Current git commit message | `git commit -m #{current_git_commit_message}` |
+| `#{current_git_tag}`            | Current git tag            | `git tag #{current_git_tag}`                  |
+| `#{current_git_repo}`           | Current git repo           | `git clone #{current_git_repo}`               |
+| `#{current_git_repo_url}`       | Current git repo url       | `git clone #{current_git_repo_url}`           |
+| `#{current_git_repo_name}`      | Current git repo name      | `echo #{current_git_repo_name}`               |
+| `#{current_git_repo_owner}`     | Current git repo owner     | `echo #{current_git_repo_owner}`              |
+| `#{git_user_name}`              | Local git user name        | `echo #{git_user_name}`                       |
+| `#{git_user_email}`             | Local git user email       | `echo #{git_user_email}`                      |

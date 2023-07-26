@@ -110,3 +110,20 @@ filename: 1690340590431
 11:03:10 AM [CWF] Run command: vim 1690340590431
 ✨  Done in 1.99s.
 ```
+
+
+## 内置 tag
+
+| Tag                             | 描述                 | 例子                                          |
+| ------------------------------- | -------------------- | --------------------------------------------- |
+| `#{timestamp}`                  | 时间戳               | `touch #{timestamp}`                          |
+| `#{current_git_branch}`         | 当前 Git 分支        | `git checkout -b #{current_git_branch}`       |
+| `#{current_git_commit}`         | 当前 Git commit 哈希 | `git commit -m #{current_git_commit}`         |
+| `#{current_git_commit_message}` | 当前 Git commit 描述 | `git commit -m #{current_git_commit_message}` |
+| `#{current_git_tag}`            | 当前 git tag         | `git tag #{current_git_tag}`                  |
+| `#{current_git_repo}`           | 当前 git 仓库        | `git clone #{current_git_repo}`               |
+| `#{current_git_repo_url}`       | 当前 git 仓库 url    | `git clone #{current_git_repo_url}`           |
+| `#{current_git_repo_name}`      | 当前 git 仓库名称    | `echo #{current_git_repo_name}`               |
+| `#{current_git_repo_owner}`     | 当前 git 仓库所有者  | `echo #{current_git_repo_owner}`              |
+| `#{git_user_name}`              | 本地 Git 用户名      | `echo #{git_user_name}`                       |
+| `#{git_user_email}`             | 本地 Git 邮箱        | `echo #{git_user_email}`                      |

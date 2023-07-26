@@ -1,3 +1,4 @@
+import { TAGS_MAP } from './tags'
 import type { StepTags } from './types'
 
 /**
@@ -9,6 +10,9 @@ import type { StepTags } from './types'
  */
 export function parserTemplateTag(template: string, tags: StepTags): string {
   return template.replace(/#\{(\w+)\}/g, (_, key) => {
+    if (Reflect.has(TAGS_MAP, key))
+      return Reflect.get(TAGS_MAP, key)()
+
     const value = tags[key]
     if (typeof value === 'function')
       return value()
