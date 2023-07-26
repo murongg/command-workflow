@@ -1,7 +1,7 @@
 {
   "name": "command-workflow",
   "type": "module",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "packageManager": "pnpm@8.6.0",
   "description": "",
   "author": "MuRong <hi@mrong.me>",
