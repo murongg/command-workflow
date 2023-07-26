@@ -2,7 +2,6 @@
 
 exports[`describe > test defineConfig 1`] = `
 {
-  "log": true,
   "logLevel": "info",
   "steps": [
     {
