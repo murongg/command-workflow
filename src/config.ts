@@ -14,6 +14,16 @@ export interface UserConfig {
    */
   logLevel?: LogLevel
   /**
+   * Whether to skip error.
+   * @default false
+   */
+  isSkipError?: boolean
+  /**
+   * When throw error whether to break.
+   * @default false
+   */
+  isThrowErrorBreak?: boolean
+  /**
    * Steps.
    */
   steps: Step[]
