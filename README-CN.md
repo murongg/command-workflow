@@ -166,3 +166,42 @@ module.exports = {
 | `#{current_git_repo_owner}`     | 当前 git 仓库所有者  | `echo #{current_git_repo_owner}`              |
 | `#{git_user_name}`              | 本地 Git 用户名      | `echo #{git_user_name}`                       |
 | `#{git_user_email}`             | 本地 Git 邮箱        | `echo #{git_user_email}`                      |
+
+## Types 
+```ts
+interface StepTags {
+  [x: string]: (() => string) | string
+}
+interface Step {
+  command: string
+  error?: () => void
+  tags?: StepTags
+  before?: (command: string, tags: Record<string, any>) => string | undefined
+  after?: (command: string, buffer: Buffer) => void
+}
+
+type LogType = 'error' | 'warn' | 'info'
+type LogLevel = LogType | 'silent'
+
+interface UserConfig {
+  /**
+     * Log level.
+     * @default 'info'
+     */
+  logLevel?: LogLevel
+  /**
+     * Steps.
+     */
+  steps: Step[]
+}
+type UserConfigFn = (...args: any[]) => UserConfig | Promise<UserConfig>
+interface UserConfigMap {
+  default: UserConfig | UserConfigFn | null
+  [x: string]: UserConfig | UserConfigFn | null
+}
+declare function defineConfig(config: UserConfig): UserConfig
+declare function defineConfig(config: Promise<UserConfig>): Promise<UserConfig>
+declare function defineConfig(config: UserConfigMap): UserConfigMap
+declare function defineConfig(config: Promise<UserConfigMap>): Promise<UserConfigMap>
+declare function defineConfig(config: UserConfigFn): UserConfigFn
+```
