@@ -147,7 +147,7 @@ module.exports = {
   steps: [{
     command: 'ls'
   }]
-  ...
+  // ...
 }
 ```
 
