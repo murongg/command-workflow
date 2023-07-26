@@ -1,5 +1,5 @@
 export const config = {
-  a: {
+  a: () => ({
     logLevel: 'info',
     steps: [{
       command: 'git tag v#{tag} -m #{message}',
@@ -8,7 +8,7 @@ export const config = {
         message: 'message',
       },
     }],
-  },
+  }),
 }
 
 export default config

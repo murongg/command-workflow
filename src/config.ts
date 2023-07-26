@@ -19,37 +19,48 @@ export interface UserConfig {
   steps: Step[]
 }
 
+export type UserConfigFn = (...args: any[]) => UserConfig | Promise<UserConfig>
+
 export interface UserConfigMap {
-  default: UserConfig | null
-  [x: string]: UserConfig | null
+  default: UserConfig | UserConfigFn | null
+  [x: string]: UserConfig | UserConfigFn | null
 }
-export type UserConfigExport = UserConfig | Promise<UserConfig> | UserConfigMap | Promise<UserConfigMap>
+export type UserConfigExport = UserConfig | Promise<UserConfig> | UserConfigMap | Promise<UserConfigMap> | UserConfigFn
 
 export function defineConfig(config: UserConfig): UserConfig
 export function defineConfig(config: Promise<UserConfig>): Promise<UserConfig>
 export function defineConfig(config: UserConfigMap): UserConfigMap
 export function defineConfig(config: Promise<UserConfigMap>): Promise<UserConfigMap>
+export function defineConfig(config: UserConfigFn): UserConfigFn
 export function defineConfig(config: UserConfigExport): UserConfigExport {
   return config
 }
 
-const config: UserConfigMap = {
+interface UserConfigMapWithFn {
+  default: UserConfig | null
+  [x: string]: UserConfig | null
+}
+
+const config: UserConfigMapWithFn = {
   default: null,
 }
 export async function getConfig(key?: string, configFile?: string, configRoot?: string) {
   if (config.default && !key)
     return config
   const configTmp = await loadConfigFromFile(configFile, configRoot)
-  if (Reflect.has(configTmp || {}, 'steps'))
-    config.default = configTmp as UserConfig
-  else if (Reflect.has(configTmp || {}, key || 'default'))
-    config.default = (configTmp as UserConfigMap)[key || 'default']
+  if (Reflect.has(configTmp || {}, 'steps')) {
+    config.default = typeof configTmp === 'function' ? await configTmp() : configTmp as UserConfig
+  }
+  else if (Reflect.has(configTmp || {}, key || 'default')) {
+    const value = Reflect.get(configTmp || {}, key || 'default')
+    config.default = typeof value === 'function' ? await value() : value
+  }
   if (!config.default?.steps)
     createLogger(config.default?.logLevel).error('No steps found in config file.', { timestamp: true })
   return config
 }
 
-export async function loadConfigFromFile(configFile?: string, configRoot: string = process.cwd()): Promise<UserConfig | UserConfigMap | null> {
+export async function loadConfigFromFile(configFile?: string, configRoot: string = process.cwd()): Promise<UserConfig | UserConfigFn | UserConfigMap | null> {
   let resolvedPath = ''
   if (configFile) {
     resolvedPath = resolve(configFile)
@@ -74,7 +85,7 @@ export async function loadConfigFromFile(configFile?: string, configRoot: string
 
   try {
     const config = await importModule(resolvedPath)
-    return config.default
+    return typeof config.default === 'function' ? config.default() : config.default
   }
   catch (error) {
     createLogger('error').error('Failed to load config file.', { error: error as Error, timestamp: true })
