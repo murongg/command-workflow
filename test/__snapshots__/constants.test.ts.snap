@@ -20,11 +20,11 @@ exports[`constants > test getDefaultConfigPrefixes 1`] = `
   "command.config.cjs",
   "command.config.mts",
   "command.config.cts",
-  "wordflow.config.js",
-  "wordflow.config.mjs",
-  "wordflow.config.ts",
-  "wordflow.config.cjs",
-  "wordflow.config.mts",
-  "wordflow.config.cts",
+  "workflow.config.js",
+  "workflow.config.mjs",
+  "workflow.config.ts",
+  "workflow.config.cjs",
+  "workflow.config.mts",
+  "workflow.config.cts",
 ]
 `;
