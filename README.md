@@ -118,7 +118,7 @@ filename: 1690340590431
 
 - **before:** Before executing the command, a callback function can be used to modify the command and tag collection. This callback function takes the command and tag collection as parameters and allows for modifications to the command during execution. Once the callback function has completed, the program will execute the modified command returned by the callback function.
 - **after:** After the command is executed, you can retrieve the executed command and the execution result through a callback function. The callback function takes the command and execution result as parameters, and it does not have a return value. This allows you to conveniently view the final executed command and its corresponding execution result.
-
+- **error:** When an error occurs during command execution, you can use a callback function to handle the error. The callback function takes the error as a parameter and does not have a return value. This allows you to conveniently handle errors that occur during command execution.
 ```js 
 // cwf.config.js
 export default defineConfig({
@@ -134,6 +134,10 @@ export default defineConfig({
     after: (command, exec) => {
       console.log('after real command: ', command)
       console.log('after exec: ', exec)
+    },
+    // eslint-disable-next-line n/handle-callback-err
+    error: (err) => {
+      console.log('error:', error)
     }
   }],
 })
@@ -176,7 +180,7 @@ interface StepTags {
 }
 interface Step {
   command: string
-  error?: () => void
+  error?: (error: Error) => void
   tags?: StepTags
   before?: (command: string, tags: Record<string, any>) => string | undefined
   after?: (command: string, buffer: Buffer) => void

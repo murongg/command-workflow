@@ -116,6 +116,7 @@ filename: 1690340590431
 
 - **before:** 在执行命令之前，可以通过一个回调函数对命令进行修改。该回调函数接受命令和标签集合作为参数，并允许在执行时对命令进行修改。一旦回调函数执行完毕，程序将执行回调函数返回的修改后的命令。
 - **after:** 在命令执行后，你可以通过回调函数获取执行的命令和执行结果。回调函数的参数包含命令和执行结果，没有返回值。你可以方便地查看最终执行的命令和相应的执行结果。
+- **error:** 当命令执行过程中出现错误时，可以使用回调函数来处理错误。回调函数将错误作为参数，并且没有返回值。这使您可以方便地处理命令执行期间发生的错误。
 
 ```js 
 // cwf.config.js
@@ -132,6 +133,10 @@ export default defineConfig({
     after: (command, exec) => {
       console.log('after real command: ', command)
       console.log('after exec: ', exec)
+    },
+    // eslint-disable-next-line n/handle-callback-err
+    error: (err) => {
+      console.log('error:', error)
     }
   }],
 })
