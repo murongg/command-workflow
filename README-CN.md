@@ -112,21 +112,6 @@ filename: 1690340590431
 ```
 
 
-## Commonjs
-
-**如果你使用 `commonjs` 方式加载模块，你必须使用这种方式定义你的配置文件。不要使用 `require()` 方法导入 `command-workflow` ，因为 `require()` 默认会执行一次。**
-
-```js
-// cwf.config.js
-module.exports = {
-  steps: [{
-    command: 'ls'
-  }]
-  ...
-}
-```
-
-
 ### 使用 hooks
 
 - **before:** 在执行命令之前，可以通过一个回调函数对命令进行修改。该回调函数接受命令和标签集合作为参数，并允许在执行时对命令进行修改。一旦回调函数执行完毕，程序将执行回调函数返回的修改后的命令。
@@ -150,6 +135,20 @@ export default defineConfig({
     }
   }],
 })
+```
+
+## Commonjs
+
+**如果你使用 `commonjs` 方式加载模块，你必须使用这种方式定义你的配置文件。不要使用 `require()` 方法导入 `command-workflow` ，因为 `require()` 默认会执行一次。**
+
+```js
+// cwf.config.js
+module.exports = {
+  steps: [{
+    command: 'ls'
+  }]
+  ...
+}
 ```
 
 ## 内置 tag
