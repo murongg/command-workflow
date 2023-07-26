@@ -1,6 +1,6 @@
 import { resolve } from 'path'
 import { describe, expect, it } from 'vitest'
-import { type UserConfig, defineConfig, loadConfigFromFile } from '../src/config'
+import { type UserConfig, defineConfig, getConfig, loadConfigFromFile } from '../src/config'
 
 describe('describe', () => {
   it('test defineConfig', () => {
@@ -45,5 +45,25 @@ describe('describe', () => {
     // test null
     const output4 = await loadConfigFromFile()
     expect(output4).toBe(null)
+  })
+
+  it('test getConfig', async () => {
+    const cwd = resolve(__dirname)
+    const output = await getConfig(undefined, undefined, cwd)
+    const res = {
+      log: true,
+      logLevel: 'info',
+      steps: [{
+        command: 'git tag v#{tag} -m #{message}',
+        tags: {
+          tag: 'tag',
+          message: 'message',
+        },
+      }],
+    }
+    expect(output.default).toEqual(res)
+    const file2 = resolve(__dirname, 'cwf.config2.js')
+    const output2 = await getConfig('a', file2)
+    expect(output2.default).toEqual(res)
   })
 })
