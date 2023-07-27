@@ -6,19 +6,6 @@ import { getConfig } from './config'
 import { parserTemplateTag } from './parser'
 import { createLogger } from './logger'
 
-const cli = cac('cwf')
-cli
-  .version(version)
-  .option('-c, --config <path>', 'Path to config file')
-  .help()
-
-cli
-  .command('[key]', 'Run command by key.').action((key: string, options) => {
-    run(key, options.config)
-  })
-
-cli.parse()
-
 async function run(key?: string, configFile?: string, configRoot?: string) {
   const config = await getConfig(key, configFile, configRoot)
   if (config) {
@@ -44,4 +31,19 @@ async function run(key?: string, configFile?: string, configRoot?: string) {
       }
     }
   }
+}
+
+export function start() {
+  const cli = cac('cwf')
+  cli
+    .version(version)
+    .option('-c, --config <path>', 'Path to config file')
+    .help()
+
+  cli
+    .command('[key]', 'Run command by key.').action((key: string, options) => {
+      run(key, options.config)
+    })
+
+  cli.parse()
 }

@@ -1,8 +1,12 @@
 #!/usr/bin/env node
 'use strict'
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined')
-  require('../dist/index.cjs')
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+  const { start } = require('../dist/index.cjs')
+  start()
+}
 
-else
-  import('../dist/index.mjs')
+else {
+  const { start } = await import('../dist/index.mjs')
+  start()
+}
 

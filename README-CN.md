@@ -142,20 +142,6 @@ export default defineConfig({
 })
 ```
 
-## Commonjs
-
-**如果你使用 `commonjs` 方式加载模块，你必须使用这种方式定义你的配置文件。不要使用 `require()` 方法导入 `command-workflow` ，因为 `require()` 默认会执行一次。**
-
-```js
-// cwf.config.js
-module.exports = {
-  steps: [{
-    command: 'ls'
-  }]
-  // ...
-}
-```
-
 ## 内置 tag
 
 | Tag                             | 描述                 | 例子                                          |

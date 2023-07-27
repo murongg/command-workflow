@@ -143,20 +143,6 @@ export default defineConfig({
 })
 ```
 
-## Commonjs
-
-**If you use `commonjs` to load your module, make sure to define your config file in this way. Avoid using the `require()` method to import `command-workflow`, as `require()` executes once by default.**
-
-```js
-// cwf.config.js
-module.exports = {
-  steps: [{
-    command: 'ls'
-  }]
-  // ...
-}
-```
-
 ## Built-in tag
 
 | Tag                             | Description                | Example                                       |
