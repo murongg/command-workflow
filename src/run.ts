@@ -6,12 +6,17 @@ import { getConfig } from './config'
 import { parserTemplateTag } from './parser'
 import { createLogger } from './logger'
 
+let globalTags: Record<string, string> = {}
 async function run(key?: string, configFile?: string, configRoot?: string) {
   const config = await getConfig(key, configFile, configRoot)
   if (config) {
     for (const step of config.default?.steps || []) {
+      const tagsAll = {
+        ...globalTags,
+        ...step.tags,
+      }
       // eslint-disable-next-line prefer-const
-      let { value: cmd, tags } = parserTemplateTag(step.command, step.tags || {})
+      let { value: cmd, tags } = parserTemplateTag(step.command, tagsAll)
       const beforeCmd = step.before?.(cmd, tags)
       if (beforeCmd)
         cmd = beforeCmd
@@ -41,10 +46,18 @@ export function start() {
   cli
     .version(version)
     .option('-c, --config <path>', 'Path to config file')
+    .option('-t, --tags <tags>', 'Global tags for command') //  cwf --tags 'tag1=1|tag2=2'
     .help()
 
   cli
     .command('[key]', 'Run command by key.').action((key: string, options) => {
+      globalTags = options.tags
+        ? (options.tags as string).split('|').reduce((prev, curr) => {
+            const [key, value] = curr.split('=')
+            prev[key] = value
+            return prev
+          }, {} as Record<string, string>)
+        : {}
       run(key, options.config)
     })
 
