@@ -64,6 +64,9 @@ filename: 1690340590431
 ✨  Done in 1.99s.
 ```
 
+> CWF allows you to use the `#{tag}` format in the command field to pass custom tags. You can use the tag names as keys in the tags field and pass methods or strings as values to CWF. CWF will parse these tags, apply them to the command, and execute the corresponding operations.  
+Of course, CWF also provides some built-in tags for your convenience. [View](#built-in-tags)
+
 ### Advanced Usage
 
 ```bash 
@@ -114,6 +117,8 @@ filename: 1690340590431
 ✨  Done in 1.99s.
 ```
 
+> You can customize CWF sub-commands in the configuration file and implement multiple command workflows by appending custom sub-commands after the CWF command. As shown above, by defining a sub-command named **firstCommand** in the configuration file, you can execute the specified workflow by running the cwf firstCommand command. This way, you can easily configure and execute multiple command workflows according to your needs.
+
 ### Use hooks
 
 - **before:** Before executing the command, a callback function can be used to modify the command and tag collection. This callback function takes the command and tag collection as parameters and allows for modifications to the command during execution. Once the callback function has completed, the program will execute the modified command returned by the callback function.
@@ -159,82 +164,24 @@ export default defineConfig({
 | `#{git_user_name}`              | Local git user name        | `echo #{git_user_name}`                       |
 | `#{git_user_email}`             | Local git user email       | `echo #{git_user_email}`                      |
 
-## Types 
-```ts
-declare function start(): void
+## Config
 
-interface StepTags {
-  [x: string]: (() => string) | string
-}
-interface Step {
-  /**
-     * The command to run
-     */
-  command: string
-  /**
-     * The tags to use for the command
-     */
-  tags?: StepTags
-  /**
-     * enabled or disabled the step
-     */
-  disabled?: boolean | ((command: string, tags: Record<string, any>) => boolean)
-  /**
-     * error callback
-     * @param error
-     * @returns
-     */
-  error?: (error: Error) => void
-  /**
-     * before hook, before executing the command
-     * @param command
-     * @param tags
-     * @returns
-     */
-  before?: (command: string, tags: Record<string, any>) => string | undefined
-  /**
-     * after hook, after executing the command
-     * @param command
-     * @param buffer
-     * @returns
-     */
-  after?: (command: string, buffer: Buffer) => void
-}
+### UserConfig
 
-type LogType = 'error' | 'warn' | 'info'
-type LogLevel = LogType | 'silent'
+| Name              | Description                                         | Type                           | Default | Required |
+| ----------------- | -------------------------------------------- | ------------------------------ | ------ | -------- |
+| steps             | workflow step                                | [Step[]](#step)                |        | ✅        |
+| logLevel          | log level                                    | `error` `warn` `info` `silent` | `info` | ❌        |
+| isSkipError       | Whether to skip the error log                | boolean                        | false  | ❌        |
+| isThrowErrorBreak | Do not continue execution if an error occurs | boolean                        | false  | ❌        |
 
-interface UserConfig {
-  /**
-     * Log level.
-     * @default 'info'
-     */
-  logLevel?: LogLevel
-  /**
-     * Whether to skip error.
-     * @default false
-     */
-  isSkipError?: boolean
-  /**
-     * When throw error whether to break.
-     * @default false
-     */
-  isThrowErrorBreak?: boolean
-  /**
-     * Steps.
-     */
-  steps: Step[]
-}
-type UserConfigFn = (...args: any[]) => UserConfig | Promise<UserConfig>
-interface UserConfigMap {
-  default: UserConfig | UserConfigFn | null
-  [x: string]: UserConfig | UserConfigFn | null
-}
-declare function defineConfig(config: UserConfig): UserConfig
-declare function defineConfig(config: Promise<UserConfig>): Promise<UserConfig>
-declare function defineConfig(config: UserConfigMap): UserConfigMap
-declare function defineConfig(config: Promise<UserConfigMap>): Promise<UserConfigMap>
-declare function defineConfig(config: UserConfigFn): UserConfigFn
+### Step
 
-export { defineConfig, start }
-```
+| Name              | Description                                         | Type                           | Default | Required |
+| -------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- | ------ | -------- |
+| command  | command to execute                                                                                                                              | string                                                                |        | ✅        |
+| tags     | tags map                                                                                                                                        | `[x: string]: (() => string)`                                         | string |          | ❌ |
+| disabled | Whether to disabled command to run                                                                                                              | `boolean` `((command: string, tags: Record<string, any>) => boolean)` | false  | ❌        |
+| error    | error callback, no return value                                                                                                                 | `(error: Error) => void`                                              |        | ❌        |
+| before   | Callback before the command is executed, the return value is the command you expect to be executed eventually, the return value is not required | `(command: string, tags: Record<string, any>) => string`              |        | ❌        |
+| after    | Callback after the command is executed, no return value                                                                                         | `(command: string, buffer: Buffer) => void`                           |        | ❌        |
