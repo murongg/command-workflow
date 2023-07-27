@@ -119,6 +119,63 @@ filename: 1690340590431
 
 > You can customize CWF sub-commands in the configuration file and implement multiple command workflows by appending custom sub-commands after the CWF command. As shown above, by defining a sub-command named **firstCommand** in the configuration file, you can execute the specified workflow by running the cwf firstCommand command. This way, you can easily configure and execute multiple command workflows according to your needs.
 
+### Specify Steps
+
+You can define `unikey` in steps, and then specify the steps to be executed through the command line.  
+Use `cwf -s 'xxx'` to specify the steps to be executed. The value is the `unikey` you set, use `,` split.
+
+```bash
+
+```js
+// cwf.config.js
+import { defineConfig } from 'command-workflow'
+
+let gitUser = ''
+
+export default defineConfig({
+  steps: [{
+    command: 'ls',
+    unikey: '1'
+  }, {
+    unikey: '2',
+    command: 'touch #{git_user_name}',
+    before: (command, tags) => {
+      console.log('before command: ', command)
+      console.log('before tags: ', tags)
+      gitUser = tags.git_user_name
+    },
+    after: (command, exec) => {
+      console.log('after real command: ', command)
+      console.log('after exec: ', exec)
+    }
+  }, {
+    unikey: '3',
+    command: 'echo #{user}',
+    tags: {
+      user: () => gitUser
+    }
+  }],
+})
+```
+
+```bash
+# Run command 
+npx cwf -s '2,3,1'
+# Run log
+$ cwf -s '2,3,1'
+before command:  touch murong
+before tags:  { git_user_name: 'murong' }
+4:22:41 PM [CWF] Run command: touch murong
+after real command:  touch murong
+after exec:  null
+4:22:41 PM [CWF] Run command: echo murong
+murong
+4:22:41 PM [CWF] Run command: ls
+cwf.config.js           node_modules            package-lock.json       
+package.json            木荣
+✨  Done in 2.21s.
+```
+
 ### Use hooks
 
 - **before:** Before executing the command, a callback function can be used to modify the command and tag collection. This callback function takes the command and tag collection as parameters and allows for modifications to the command during execution. Once the callback function has completed, the program will execute the modified command returned by the callback function.
@@ -192,4 +249,4 @@ export default defineConfig({
 | ----------------------------- | ------------------------------------------------------ | ------------------------------------- |
 | `-c, --config <path>`         | Path to config file                                    | `cwf -c cwf.custom.config.js`         |
 | `-t, --tags <tags>`           | Global tags for command                                | `cwf --tags 'tag1=1\|tag2=2\|tag3=3'` |
-| `-s, --specify-steps <steps>` | Specify steps to run, the value is the unikey you set. | `cwf -ss '1,3,2'`                     |
+| `-s, --specify-steps <steps>` | Specify steps to run, the value is the unikey you set. | `cwf -s '1,3,2'`                     |

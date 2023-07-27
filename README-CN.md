@@ -116,6 +116,63 @@ filename: 1690340590431
 
 > 你可以在配置文件中自定义 CWF 子命令，并通过在 CWF 命令后追加自定义子命令来实现多个命令工作流。如上，在配置文件中定义了名为 **firstCommand** 的子命令，然后执行 `cwf firstCommand` 命令即可执行指定的工作流程。这样，你可以轻松地根据需要配置和执行多个命令工作流程。
 
+### 指定操作步骤
+
+你可以在步骤中定义 `unikey`，然后通过命令行指定要执行的步骤。
+使用 `cwf -s 'xxx'` 指定要执行的步骤。 值为你设置的 `unikey`，用 `,` 分割。
+
+```bash
+
+```js
+// cwf.config.js
+import { defineConfig } from 'command-workflow'
+
+let gitUser = ''
+
+export default defineConfig({
+  steps: [{
+    command: 'ls',
+    unikey: '1'
+  }, {
+    unikey: '2',
+    command: 'touch #{git_user_name}',
+    before: (command, tags) => {
+      console.log('before command: ', command)
+      console.log('before tags: ', tags)
+      gitUser = tags.git_user_name
+    },
+    after: (command, exec) => {
+      console.log('after real command: ', command)
+      console.log('after exec: ', exec)
+    }
+  }, {
+    unikey: '3',
+    command: 'echo #{user}',
+    tags: {
+      user: () => gitUser
+    }
+  }],
+})
+```
+
+```bash
+# Run command 
+npx cwf -s '2,3,1'
+# Run log
+$ cwf -s '2,3,1'
+before command:  touch murong
+before tags:  { git_user_name: 'murong' }
+4:22:41 PM [CWF] Run command: touch murong
+after real command:  touch murong
+after exec:  null
+4:22:41 PM [CWF] Run command: echo murong
+murong
+4:22:41 PM [CWF] Run command: ls
+cwf.config.js           node_modules            package-lock.json       
+package.json            木荣
+✨  Done in 2.21s.
+```
+
 ### 使用 hooks
 
 *   **before:** 在执行命令之前，可以通过一个回调函数对命令进行修改。该回调函数接受命令和标签集合作为参数，并允许在执行时对命令进行修改。一旦回调函数执行完毕，程序将执行回调函数返回的修改后的命令。
@@ -190,4 +247,4 @@ export default defineConfig({
 | ----------------------------- | ------------------------------------- | ------------------------------------- |
 | `-c, --config <path>`         | 配置文件路径                          | `cwf -c cwf.custom.config.js`         |
 | `-t, --tags <tags>`           | 全局 tags                             | `cwf --tags 'tag1=1\|tag2=2\|tag3=3'` |
-| `-s, --specify-steps <steps>` | 指定运行的步骤，值为你设置的 unikey。 | `cwf -ss '1,3,2'`                     |
+| `-s, --specify-steps <steps>` | 指定运行的步骤，值为你设置的 unikey。 | `cwf -s '1,3,2'`                     |
