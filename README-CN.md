@@ -121,8 +121,6 @@ filename: 1690340590431
 你可以在步骤中定义 `unikey`，然后通过命令行指定要执行的步骤。
 使用 `cwf -s 'xxx'` 指定要执行的步骤。 值为你设置的 `unikey`，用 `,` 分割。
 
-```bash
-
 ```js
 // cwf.config.js
 import { defineConfig } from 'command-workflow'

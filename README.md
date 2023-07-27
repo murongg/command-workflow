@@ -124,8 +124,6 @@ filename: 1690340590431
 You can define `unikey` in steps, and then specify the steps to be executed through the command line.  
 Use `cwf -s 'xxx'` to specify the steps to be executed. The value is the `unikey` you set, use `,` split.
 
-```bash
-
 ```js
 // cwf.config.js
 import { defineConfig } from 'command-workflow'
