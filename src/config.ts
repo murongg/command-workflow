@@ -26,7 +26,7 @@ export interface UserConfig {
   /**
    * Steps.
    */
-  steps: Step[]
+  steps: (Step | string)[]
 }
 
 export type UserConfigFn = (...args: any[]) => UserConfig | Promise<UserConfig>
@@ -46,25 +46,42 @@ export function defineConfig(config: UserConfigExport): UserConfigExport {
   return config
 }
 
-interface UserConfigMapWithFn {
-  default: UserConfig | null
-  [x: string]: UserConfig | null
+type UserConfigOnlyStep = Omit<UserConfig, 'steps'> & { steps: Step[] }
+interface UserConfigMapOmitFn {
+  default: UserConfigOnlyStep | null
+  [x: string]: UserConfigOnlyStep | null
 }
 
-const config: UserConfigMapWithFn = {
+const config: UserConfigMapOmitFn = {
   default: null,
 }
 export async function getConfig(key?: string, configFile?: string, configRoot?: string) {
   if (config.default && !key)
     return config
   const configTmp = await loadConfigFromFile(configFile, configRoot)
+  let realConfig: UserConfig = {
+    steps: [],
+  }
   if (Reflect.has(configTmp || {}, 'steps')) {
-    config.default = typeof configTmp === 'function' ? await configTmp() : configTmp as UserConfig
+    realConfig = typeof configTmp === 'function' ? await configTmp() : configTmp as UserConfig
   }
   else if (Reflect.has(configTmp || {}, key || 'default')) {
     const value = Reflect.get(configTmp || {}, key || 'default')
-    config.default = typeof value === 'function' ? await value() : value
+    realConfig = typeof value === 'function' ? await value() : value
   }
+  else {
+    realConfig = configTmp as UserConfig
+  }
+  config.default = {
+    steps: [],
+    logLevel: realConfig?.logLevel || 'info',
+    isSkipError: realConfig?.isSkipError || false,
+    isThrowErrorBreak: realConfig?.isThrowErrorBreak || false,
+  }
+  config.default.steps = realConfig?.steps.map((item) => {
+    return typeof item === 'string' ? { command: item } : item
+  })
+
   if (!config.default?.steps)
     createLogger(config.default?.logLevel).error('No steps found in config file.', { timestamp: true })
   return config

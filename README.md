@@ -30,24 +30,24 @@ import { defineConfig } from 'command-workflow'
 const filename = new Date().getTime()
 
 export default defineConfig({
-  steps: [{
-    command: 'ls',
-  }, {
-    command: 'touch #{filename}',
-    tags: {
-      filename: () => {
-        console.log('filename:', filename)
-        return filename
+  steps: [
+    'ls',
+    {
+      command: 'touch #{filename}',
+      tags: {
+        filename: () => {
+          console.log('filename:', filename)
+          return filename
+        }
       }
-    }
-  }, {
-    command: 'vim #{filename}',
-    tags: {
-      filename: () => {
-        return filename
+    }, {
+      command: 'vim #{filename}',
+      tags: {
+        filename: () => {
+          return filename
+        }
       }
-    }
-  }],
+    }],
 })
 ```
 
@@ -168,20 +168,20 @@ export default defineConfig({
 
 ### UserConfig
 
-| Name              | Description                                         | Type                           | Default | Required |
-| ----------------- | -------------------------------------------- | ------------------------------ | ------ | -------- |
-| steps             | workflow step                                | [Step[]](#step)                |        | ✅        |
-| logLevel          | log level                                    | `error` `warn` `info` `silent` | `info` | ❌        |
-| isSkipError       | Whether to skip the error log                | boolean                        | false  | ❌        |
-| isThrowErrorBreak | Do not continue execution if an error occurs | boolean                        | false  | ❌        |
+| Name              | Description                                  | Type                           | Default | Required |
+| ----------------- | -------------------------------------------- | ------------------------------ | ------- | -------- |
+| steps             | workflow step                                | [Step[]](#step)                |         | ✅        |
+| logLevel          | log level                                    | `error` `warn` `info` `silent` | `info`  | ❌        |
+| isSkipError       | Whether to skip the error log                | boolean                        | false   | ❌        |
+| isThrowErrorBreak | Do not continue execution if an error occurs | boolean                        | false   | ❌        |
 
 ### Step
 
-| Name              | Description                                         | Type                           | Default | Required |
-| -------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- | ------ | -------- |
-| command  | command to execute                                                                                                                              | string                                                                |        | ✅        |
-| tags     | tags map                                                                                                                                        | `[x: string]: (() => string)`                                         | string |          | ❌ |
-| disabled | Whether to disabled command to run                                                                                                              | `boolean` `((command: string, tags: Record<string, any>) => boolean)` | false  | ❌        |
-| error    | error callback, no return value                                                                                                                 | `(error: Error) => void`                                              |        | ❌        |
-| before   | Callback before the command is executed, the return value is the command you expect to be executed eventually, the return value is not required | `(command: string, tags: Record<string, any>) => string`              |        | ❌        |
-| after    | Callback after the command is executed, no return value                                                                                         | `(command: string, buffer: Buffer) => void`                           |        | ❌        |
+| Name     | Description                                                                                                                                     | Type                                                                  | Default | Required |
+| -------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- | ------- | -------- |
+| command  | command to execute                                                                                                                              | string                                                                |         | ✅        |
+| tags     | tags map                                                                                                                                        | `[x: string]: (() => string)`                                         | string  |          | ❌ |
+| disabled | Whether to disabled command to run                                                                                                              | `boolean` `((command: string, tags: Record<string, any>) => boolean)` | false   | ❌        |
+| error    | error callback, no return value                                                                                                                 | `(error: Error) => void`                                              |         | ❌        |
+| before   | Callback before the command is executed, the return value is the command you expect to be executed eventually, the return value is not required | `(command: string, tags: Record<string, any>) => string`              |         | ❌        |
+| after    | Callback after the command is executed, no return value                                                                                         | `(command: string, buffer: Buffer) => void`                           |         | ❌        |

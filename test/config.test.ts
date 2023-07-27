@@ -50,6 +50,8 @@ describe('describe', () => {
     const output = await getConfig(undefined, undefined, cwd)
     const res = {
       logLevel: 'info',
+      isSkipError: false,
+      isThrowErrorBreak: false,
       steps: [{
         command: 'git tag v#{tag} -m #{message}',
         tags: {
@@ -59,8 +61,22 @@ describe('describe', () => {
       }],
     }
     expect(output.default).toEqual(res)
-    const file2 = resolve(__dirname, 'cwf.config2.js')
+    const file2 = resolve(__dirname, 'cwf.config3.js')
     const output2 = await getConfig('a', file2)
-    expect(output2.default).toEqual(res)
+    const output2Res = {
+      logLevel: 'info',
+      isSkipError: false,
+      isThrowErrorBreak: false,
+      steps: [{
+        command: 'git tag v#{tag} -m #{message}',
+        tags: {
+          tag: 'tag',
+          message: 'message',
+        },
+      }, {
+        command: 'ls',
+      }],
+    }
+    expect(output2.default).toEqual(output2Res)
   })
 })

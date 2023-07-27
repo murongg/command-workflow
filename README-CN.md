@@ -27,24 +27,24 @@ import { defineConfig } from 'command-workflow'
 const filename = new Date().getTime()
 
 export default defineConfig({
-  steps: [{
-    command: 'ls',
-  }, {
-    command: 'touch #{filename}',
-    tags: {
-      filename: () => {
-        console.log('filename:', filename)
-        return filename
+  steps: [
+    'ls',
+    {
+      command: 'touch #{filename}',
+      tags: {
+        filename: () => {
+          console.log('filename:', filename)
+          return filename
+        }
       }
-    }
-  }, {
-    command: 'vim #{filename}',
-    tags: {
-      filename: () => {
-        return filename
+    }, {
+      command: 'vim #{filename}',
+      tags: {
+        filename: () => {
+          return filename
+        }
       }
-    }
-  }],
+    }],
 })
 ```
 
