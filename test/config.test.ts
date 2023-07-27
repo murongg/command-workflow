@@ -60,9 +60,17 @@ describe('describe', () => {
         },
       }],
     }
+    // remove unikey
+    output.default?.steps.forEach((step) => {
+      delete step.unikey
+    })
     expect(output.default).toEqual(res)
     const file2 = resolve(__dirname, 'cwf.config3.js')
     const output2 = await getConfig('a', file2)
+    // remove unikey
+    output2.default?.steps.forEach((step) => {
+      delete step.unikey
+    })
     const output2Res = {
       logLevel: 'info',
       isSkipError: false,
