@@ -50,7 +50,7 @@ export function start() {
     .version(version)
     .option('-c, --config <path>', 'Path to config file.')
     .option('-t, --tags <tags>', 'Global tags for command.') // cwf --tags 'tag1=1|tag2=2'
-    .option('-s, --specify-steps <steps>', 'Specify steps to run, the value is the unikey you set.') // cwf -ss '1,3,2'
+    .option('-s, --specify-steps <steps>', 'Specify steps to run, the value is the unikey you set.') // cwf -s '1,3,2'
     .help()
 
   cli
