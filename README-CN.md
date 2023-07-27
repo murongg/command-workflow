@@ -148,38 +148,45 @@ export default defineConfig({
 
 ## 内置 tag
 
-| Tag                             | 描述               | 例子                                            |
-| ------------------------------- | ---------------- | --------------------------------------------- |
-| `#{timestamp}`                  | 时间戳              | `touch #{timestamp}`                          |
+| Tag                             | 描述                 | 例子                                          |
+| ------------------------------- | -------------------- | --------------------------------------------- |
+| `#{timestamp}`                  | 时间戳               | `touch #{timestamp}`                          |
 | `#{current_git_branch}`         | 当前 Git 分支        | `git checkout -b #{current_git_branch}`       |
 | `#{current_git_commit}`         | 当前 Git commit 哈希 | `git commit -m #{current_git_commit}`         |
 | `#{current_git_commit_message}` | 当前 Git commit 描述 | `git commit -m #{current_git_commit_message}` |
-| `#{current_git_tag}`            | 当前 git tag       | `git tag #{current_git_tag}`                  |
+| `#{current_git_tag}`            | 当前 git tag         | `git tag #{current_git_tag}`                  |
 | `#{current_git_repo}`           | 当前 git 仓库        | `git clone #{current_git_repo}`               |
 | `#{current_git_repo_url}`       | 当前 git 仓库 url    | `git clone #{current_git_repo_url}`           |
-| `#{current_git_repo_name}`      | 当前 git 仓库名称      | `echo #{current_git_repo_name}`               |
-| `#{current_git_repo_owner}`     | 当前 git 仓库所有者     | `echo #{current_git_repo_owner}`              |
-| `#{git_user_name}`              | 本地 Git 用户名       | `echo #{git_user_name}`                       |
+| `#{current_git_repo_name}`      | 当前 git 仓库名称    | `echo #{current_git_repo_name}`               |
+| `#{current_git_repo_owner}`     | 当前 git 仓库所有者  | `echo #{current_git_repo_owner}`              |
+| `#{git_user_name}`              | 本地 Git 用户名      | `echo #{git_user_name}`                       |
 | `#{git_user_email}`             | 本地 Git 邮箱        | `echo #{git_user_email}`                      |
 
 ## Config
 
 ### UserConfig
 
-| 名称 | 描述 | 类型 | 默认值 |是否必填|
-| --- | --- | --- | --- |---|
-| steps | 工作流步骤  | [Step[]](#step)  |  | ✅|
-| logLevel | 日志等级  | `error` `warn` `info` `silent` | `info`  | ❌|
-| isSkipError | 是否跳过错误日志  |boolean | false  | ❌|
-| isThrowErrorBreak | 是否出现错误不继续执行  |boolean | false  | ❌|
+| 名称              | 描述                   | 类型                           | 默认值 | 是否必填 |
+| ----------------- | ---------------------- | ------------------------------ | ------ | -------- |
+| steps             | 工作流步骤             | [Step[]](#step)                |        | ✅        |
+| logLevel          | 日志等级               | `error` `warn` `info` `silent` | `info` | ❌        |
+| isSkipError       | 是否跳过错误日志       | boolean                        | false  | ❌        |
+| isThrowErrorBreak | 是否出现错误不继续执行 | boolean                        | false  | ❌        |
 
 ### Step
 
-| 名称 | 描述 | 类型 | 默认值 |是否必填|
-| --- | --- | --- | --- |---|
-| command | 需要执行的命令  | string  |  | ✅|
-| tags | tag 集合  | `[x: string]: (() => string)` | string |  | ❌|
-| disabled | 是否禁止此命令执行  |`boolean` `((command: string, tags: Record<string, any>) => boolean)` | false  | ❌|
-| error | 错误回调，无返回值 | `(error: Error) => void` |   | ❌|
-| before | 命令执行之前回调，返回值是你期望最终执行的命令，返回值不是必须  | `(command: string, tags: Record<string, any>) => string` |   | ❌|
-| after | 命令执行之后回调，无返回值  | `(command: string, buffer: Buffer) => void` |   | ❌|
+| 名称     | 描述                                                           | 类型                                                                  | 默认值 | 是否必填 |
+| -------- | -------------------------------------------------------------- | --------------------------------------------------------------------- | ------ | -------- |
+| command  | 需要执行的命令                                                 | string                                                                |        | ✅        |
+| tags     | tag 集合                                                       | `[x: string]: (() => string)`                                         | string |          | ❌ |
+| disabled | 是否禁止此命令执行                                             | `boolean` `((command: string, tags: Record<string, any>) => boolean)` | false  | ❌        |
+| error    | 错误回调，无返回值                                             | `(error: Error) => void`                                              |        | ❌        |
+| before   | 命令执行之前回调，返回值是你期望最终执行的命令，返回值不是必须 | `(command: string, tags: Record<string, any>) => string`              |        | ❌        |
+| after    | 命令执行之后回调，无返回值                                     | `(command: string, buffer: Buffer) => void`                           |        | ❌        |
+
+## CLI Options
+
+| Option                | 描述                    | 示例                                  |
+| --------------------- | ----------------------- | ------------------------------------- |
+| `-c, --config <path>` | Path to config file     | `cwf -c cwf.custom.config.js`         |
+| `-t, --tags <tags>`   | Global tags for command | `cwf --tags 'tag1=1\|tag2=2\|tag3=3'` |

@@ -185,3 +185,10 @@ export default defineConfig({
 | error    | error callback, no return value                                                                                                                 | `(error: Error) => void`                                              |         | ❌        |
 | before   | Callback before the command is executed, the return value is the command you expect to be executed eventually, the return value is not required | `(command: string, tags: Record<string, any>) => string`              |         | ❌        |
 | after    | Callback after the command is executed, no return value                                                                                         | `(command: string, buffer: Buffer) => void`                           |         | ❌        |
+
+## CLI Options
+
+| Option                | Description             | Example                                   |
+| --------------------- | ----------------------- | ----------------------------------------- |
+| `-c, --config <path>` | Path to config file     | `cwf -c cwf.custom.config.js`             |
+| `-t, --tags <tags>`   | Global tags for command | `cwf --tags 'tag1=1\|tag2=2\|tag3=3'` |
