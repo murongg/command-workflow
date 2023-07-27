@@ -16,6 +16,9 @@ async function run(key?: string, configFile?: string, configRoot?: string) {
       if (beforeCmd)
         cmd = beforeCmd
 
+      if (step.disabled === true || (typeof step.disabled === 'function' && step.disabled(cmd, tags)))
+        continue
+
       createLogger().info(`${colors.cyan('Run command:')} ${colors.green(cmd)}`, { timestamp: true })
       try {
         const execRes = execSync(cmd, { stdio: 'inherit' })
