@@ -170,7 +170,7 @@ after exec:  null
 murong
 4:22:41 PM [CWF] Run command: ls
 cwf.config.js           node_modules            package-lock.json       
-package.json            木荣
+package.json            murong
 ✨  Done in 2.21s.
 ```
 
