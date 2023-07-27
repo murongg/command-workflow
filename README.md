@@ -188,7 +188,8 @@ export default defineConfig({
 
 ## CLI Options
 
-| Option                | Description             | Example                                   |
-| --------------------- | ----------------------- | ----------------------------------------- |
-| `-c, --config <path>` | Path to config file     | `cwf -c cwf.custom.config.js`             |
-| `-t, --tags <tags>`   | Global tags for command | `cwf --tags 'tag1=1\|tag2=2\|tag3=3'` |
+| Option                        | Description                                            | Example                               |
+| ----------------------------- | ------------------------------------------------------ | ------------------------------------- |
+| `-c, --config <path>`         | Path to config file                                    | `cwf -c cwf.custom.config.js`         |
+| `-t, --tags <tags>`           | Global tags for command                                | `cwf --tags 'tag1=1\|tag2=2\|tag3=3'` |
+| `-s, --specify-steps <steps>` | Specify steps to run, the value is the unikey you set. | `cwf -ss '1,3,2'`                     |

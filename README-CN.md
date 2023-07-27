@@ -186,7 +186,8 @@ export default defineConfig({
 
 ## CLI Options
 
-| Option                | 描述                    | 示例                                  |
-| --------------------- | ----------------------- | ------------------------------------- |
-| `-c, --config <path>` | Path to config file     | `cwf -c cwf.custom.config.js`         |
-| `-t, --tags <tags>`   | Global tags for command | `cwf --tags 'tag1=1\|tag2=2\|tag3=3'` |
+| Option                        | 描述                                  | 示例                                  |
+| ----------------------------- | ------------------------------------- | ------------------------------------- |
+| `-c, --config <path>`         | 配置文件路径                          | `cwf -c cwf.custom.config.js`         |
+| `-t, --tags <tags>`           | 全局 tags                             | `cwf --tags 'tag1=1\|tag2=2\|tag3=3'` |
+| `-s, --specify-steps <steps>` | 指定运行的步骤，值为你设置的 unikey。 | `cwf -ss '1,3,2'`                     |
