@@ -3,6 +3,10 @@ export interface StepTags {
 }
 export interface Step {
   /**
+   * unique key
+   */
+  unikey?: string
+  /**
    * The command to run
    */
   command: string

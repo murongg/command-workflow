@@ -5,12 +5,15 @@ import { version } from '../package.json'
 import { getConfig } from './config'
 import { parserTemplateTag } from './parser'
 import { createLogger } from './logger'
+import type { Step } from './types'
 
 let globalTags: Record<string, string> = {}
-async function run(key?: string, configFile?: string, configRoot?: string) {
+async function run(key?: string, configFile?: string, configRoot?: string, specifySteps?: string[]) {
   const config = await getConfig(key, configFile, configRoot)
   if (config) {
-    for (const step of config.default?.steps || []) {
+    let steps: Step[] = config.default?.steps || []
+    steps = specifySteps?.length ? filterSpecifySteps(steps, specifySteps) : steps
+    for (const step of steps) {
       const tagsAll = {
         ...globalTags,
         ...step.tags,
@@ -45,8 +48,9 @@ export function start() {
   const cli = cac('cwf')
   cli
     .version(version)
-    .option('-c, --config <path>', 'Path to config file')
-    .option('-t, --tags <tags>', 'Global tags for command') //  cwf --tags 'tag1=1|tag2=2'
+    .option('-c, --config <path>', 'Path to config file.')
+    .option('-t, --tags <tags>', 'Global tags for command.') // cwf --tags 'tag1=1|tag2=2'
+    .option('-s, --specify-steps <steps>', 'Specify steps to run, the value is the unikey you set.') // cwf -ss '1,3,2'
     .help()
 
   cli
@@ -58,8 +62,26 @@ export function start() {
             return prev
           }, {} as Record<string, string>)
         : {}
-      run(key, options.config)
+      const specifySteps = (options.specifySteps || '').split(',')
+      run(key, options.config, undefined, specifySteps)
     })
 
   cli.parse()
+}
+
+function filterSpecifySteps(steps: Step[], specifySteps: string[]) {
+  // sort by specifySteps order
+  const newSteps = steps.sort((a, b) => {
+    const aIndex = specifySteps.indexOf(a.unikey || '')
+    const bIndex = specifySteps.indexOf(b.unikey || '')
+    if (aIndex === -1 && bIndex === -1)
+      return 0
+    if (aIndex === -1)
+      return 1
+    if (bIndex === -1)
+      return -1
+    return aIndex - bIndex
+  })
+
+  return newSteps.filter(step => specifySteps.includes(step.unikey || ''))
 }

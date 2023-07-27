@@ -5,7 +5,7 @@ import { getDefaultConfigPrefixes } from './constants'
 import type { Step } from './types'
 import type { LogLevel } from './logger'
 import { createLogger } from './logger'
-import { isWindows } from './utils'
+import { isWindows, randomUniqueKey } from './utils'
 
 export interface UserConfig {
   /**
@@ -79,7 +79,19 @@ export async function getConfig(key?: string, configFile?: string, configRoot?: 
     isThrowErrorBreak: realConfig?.isThrowErrorBreak || false,
   }
   config.default.steps = realConfig?.steps.map((item) => {
-    return typeof item === 'string' ? { command: item } : item
+    if (typeof item === 'string') {
+      return {
+        command: item,
+        unikey: randomUniqueKey(),
+      }
+    }
+    else if (typeof item === 'object') {
+      return {
+        ...item,
+        unikey: item.unikey || randomUniqueKey(),
+      }
+    }
+    return item
   })
 
   if (!config.default?.steps)
