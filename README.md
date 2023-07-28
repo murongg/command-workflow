@@ -245,6 +245,7 @@ export default defineConfig({
 
 | Option                        | Description                                            | Example                               |
 | ----------------------------- | ------------------------------------------------------ | ------------------------------------- |
-| `-c, --config <path>`         | Path to config file                                    | `cwf -c cwf.custom.config.js`         |
+| `-c, --config <file>`         | Path to config file                                    | `cwf -c cwf.custom.config.js`         |
+| `-r, --root <root>`           | Path to config root.                                   | `cwf -r /Users/murong/documents`      |
 | `-t, --tags <tags>`           | Global tags for command                                | `cwf --tags 'tag1=1\|tag2=2\|tag3=3'` |
-| `-s, --specify-steps <steps>` | Specify steps to run, the value is the unikey you set. | `cwf -s '1,3,2'`                     |
+| `-s, --specify-steps <steps>` | Specify steps to run, the value is the unikey you set. | `cwf -s '1,3,2'`                      |

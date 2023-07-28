@@ -1,4 +1,4 @@
-import { resolve } from 'node:path'
+import { join, resolve } from 'node:path'
 import { existsSync } from 'node:fs'
 import { importModule } from 'local-pkg'
 import { getDefaultConfigPrefixes } from './constants'
@@ -102,7 +102,7 @@ export async function getConfig(key?: string, configFile?: string, configRoot?: 
 export async function loadConfigFromFile(configFile?: string, configRoot: string = process.cwd()): Promise<UserConfig | UserConfigFn | UserConfigMap | null> {
   let resolvedPath = ''
   if (configFile) {
-    resolvedPath = resolve(configFile)
+    resolvedPath = resolve(join(configRoot, configFile))
   }
   else {
     const configFiles = getDefaultConfigPrefixes()

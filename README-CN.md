@@ -243,6 +243,7 @@ export default defineConfig({
 
 | Option                        | 描述                                  | 示例                                  |
 | ----------------------------- | ------------------------------------- | ------------------------------------- |
-| `-c, --config <path>`         | 配置文件路径                          | `cwf -c cwf.custom.config.js`         |
+| `-c, --config <file>`         | 配置文件名称                          | `cwf -c cwf.custom.config.js`         |
+| `-r, --root <root>`           | 配置文件根目录                        | `cwf -r /Users/murong/documents`      |
 | `-t, --tags <tags>`           | 全局 tags                             | `cwf --tags 'tag1=1\|tag2=2\|tag3=3'` |
-| `-s, --specify-steps <steps>` | 指定运行的步骤，值为你设置的 unikey。 | `cwf -s '1,3,2'`                     |
+| `-s, --specify-steps <steps>` | 指定运行的步骤，值为你设置的 unikey。 | `cwf -s '1,3,2'`                      |

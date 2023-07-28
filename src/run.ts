@@ -48,7 +48,8 @@ export function start() {
   const cli = cac('cwf')
   cli
     .version(version)
-    .option('-c, --config <path>', 'Path to config file.')
+    .option('-c, --config <file>', 'Path to config file.')
+    .option('-r, --root <path>', 'Path to config root.')
     .option('-t, --tags <tags>', 'Global tags for command.') // cwf --tags 'tag1=1|tag2=2'
     .option('-s, --specify-steps <steps>', 'Specify steps to run, the value is the unikey you set.') // cwf -s '1,3,2'
     .help()
@@ -63,7 +64,7 @@ export function start() {
           }, {} as Record<string, string>)
         : {}
       const specifySteps = (options.specifySteps || '').split(',')
-      run(key, options.config, undefined, specifySteps)
+      run(key, options.config, options.root, specifySteps)
     })
 
   cli.parse()

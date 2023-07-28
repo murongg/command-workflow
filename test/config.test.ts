@@ -33,12 +33,10 @@ describe('describe', () => {
     }
     expect(output).toEqual(res)
     // test file
-    const file2 = resolve(__dirname, 'cwf.config.js')
-    const output2 = await loadConfigFromFile(file2)
+    const output2 = await loadConfigFromFile('cwf.config.js', __dirname)
     expect(output2).toEqual(res)
     // test error
-    const file3 = resolve(__dirname, 'command.config.js')
-    const output3 = await loadConfigFromFile(file3)
+    const output3 = await loadConfigFromFile('command.config.js', __dirname)
     expect(output3).toThrowError(Error)
     // test null
     const output4 = await loadConfigFromFile()
@@ -65,8 +63,7 @@ describe('describe', () => {
       delete step.unikey
     })
     expect(output.default).toEqual(res)
-    const file2 = resolve(__dirname, 'cwf.config3.js')
-    const output2 = await getConfig('a', file2)
+    const output2 = await getConfig('a', 'cwf.config3.js', __dirname)
     // remove unikey
     output2.default?.steps.forEach((step) => {
       delete step.unikey
