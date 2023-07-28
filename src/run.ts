@@ -63,7 +63,7 @@ export function start() {
             return prev
           }, {} as Record<string, string>)
         : {}
-      const specifySteps = (options.specifySteps || '').split(',')
+      const specifySteps = (options.specifySteps || '').split(',').filter((step: any) => !!step)
       run(key, options.config, options.root, specifySteps)
     })
 
