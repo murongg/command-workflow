@@ -30,13 +30,15 @@ export const LogLevels: Record<LogLevel, number> = {
 
 export interface LoggerOptions {
   prefix?: string
+  timeLocales?: Intl.LocalesArgument
+  timeOptions?: Intl.DateTimeFormatOptions
 }
 
 export function createLogger(
   level: LogLevel = 'info',
   options: LoggerOptions = {},
 ): Logger {
-  const { prefix = '[CWF]' } = options
+  const { prefix = '[CWF]', timeLocales, timeOptions } = options
   const thresh = LogLevels[level]
 
   function output(type: LogType, msg: string, options: LogErrorOptions = {}) {
@@ -50,7 +52,7 @@ export function createLogger(
               : type === 'warn'
                 ? colors.yellow(colors.bold(prefix))
                 : colors.red(colors.bold(prefix))
-          return `${colors.dim(new Date().toLocaleTimeString())} ${tag} ${msg}`
+          return `${colors.dim(new Date().toLocaleTimeString(timeLocales, timeOptions))} ${tag} ${msg}`
         }
         else {
           return msg

@@ -2,9 +2,8 @@ import { execSync } from 'node:child_process'
 import colors from 'picocolors'
 import cac from 'cac'
 import { version } from '../package.json'
-import { getConfig } from './config'
+import { getConfig, logger } from './config'
 import { parserTemplateTag } from './parser'
-import { createLogger } from './logger'
 import type { Step } from './types'
 
 let globalTags: Record<string, string> = {}
@@ -27,14 +26,14 @@ async function run(key?: string, configFile?: string, configRoot?: string, speci
       if (step.disabled === true || (typeof step.disabled === 'function' && step.disabled(cmd, tags)))
         continue
 
-      createLogger().info(`${colors.cyan('Run command:')} ${colors.green(cmd)}`, { timestamp: true })
+      logger.info(`${colors.cyan('Run command:')} ${colors.green(cmd)}`, { timestamp: true })
       try {
         const execRes = execSync(cmd, { stdio: 'inherit' })
         step.after?.(cmd, execRes)
       }
       catch (error) {
         if (!config.default?.isSkipError) {
-          createLogger(config?.default?.logLevel).error('Run command error.', { error: error as Error, timestamp: true })
+          logger.error('Run command error.', { error: error as Error, timestamp: true })
           step.error?.(error as Error)
         }
         if (config.default?.isThrowErrorBreak)

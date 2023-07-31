@@ -3,7 +3,7 @@ import { existsSync } from 'node:fs'
 import { importModule } from 'local-pkg'
 import { getDefaultConfigPrefixes } from './constants'
 import type { Step } from './types'
-import type { LogLevel } from './logger'
+import type { LogLevel, Logger } from './logger'
 import { createLogger } from './logger'
 import { isWindows, randomUniqueKey } from './utils'
 
@@ -27,6 +27,13 @@ export interface UserConfig {
    * Steps.
    */
   steps: (Step | string)[]
+  /**
+   * Log time options.
+   */
+  logTime?: {
+    timeLocales?: Intl.LocalesArgument
+    timeOptions?: Intl.DateTimeFormatOptions
+  }
 }
 
 export type UserConfigFn = (...args: any[]) => UserConfig | Promise<UserConfig>
@@ -55,6 +62,10 @@ interface UserConfigMapOmitFn {
 const config: UserConfigMapOmitFn = {
   default: null,
 }
+
+// eslint-disable-next-line import/no-mutable-exports
+export let logger: Logger = createLogger()
+
 export async function getConfig(key?: string, configFile?: string, configRoot?: string) {
   if (config.default && !key)
     return config
@@ -77,6 +88,7 @@ export async function getConfig(key?: string, configFile?: string, configRoot?: 
     logLevel: realConfig?.logLevel || 'info',
     isSkipError: realConfig?.isSkipError || false,
     isThrowErrorBreak: realConfig?.isThrowErrorBreak || false,
+    logTime: realConfig.logTime,
   }
   config.default.steps = realConfig?.steps.map((item) => {
     if (typeof item === 'string') {
@@ -94,8 +106,10 @@ export async function getConfig(key?: string, configFile?: string, configRoot?: 
     return item
   })
 
+  logger = createLogger(config.default?.logLevel, { timeLocales: config.default.logTime?.timeLocales, timeOptions: config.default.logTime?.timeOptions })
+
   if (!config.default?.steps)
-    createLogger(config.default?.logLevel).error('No steps found in config file.', { timestamp: true })
+    logger.error('No steps found in config file.', { timestamp: true })
   return config
 }
 

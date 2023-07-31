@@ -227,6 +227,7 @@ export default defineConfig({
 | ----------------- | -------------------------------------------- | ------------------------------ | ------- | -------- |
 | steps             | workflow step                                | [Step[]](#step)                |         | ✅        |
 | logLevel          | log level                                    | `error` `warn` `info` `silent` | `info`  | ❌        |
+| logTime           | log time options                             |                                |         | ❌        |
 | isSkipError       | Whether to skip the error log                | boolean                        | false   | ❌        |
 | isThrowErrorBreak | Do not continue execution if an error occurs | boolean                        | false   | ❌        |
 

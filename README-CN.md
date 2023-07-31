@@ -225,6 +225,7 @@ export default defineConfig({
 | ----------------- | ---------------------- | ------------------------------ | ------ | -------- |
 | steps             | 工作流步骤             | [Step[]](#step)                |        | ✅        |
 | logLevel          | 日志等级               | `error` `warn` `info` `silent` | `info` | ❌        |
+| logTime           | 日志时间选项           |                                |        | ❌        |
 | isSkipError       | 是否跳过错误日志       | boolean                        | false  | ❌        |
 | isThrowErrorBreak | 是否出现错误不继续执行 | boolean                        | false  | ❌        |
 
