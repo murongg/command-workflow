@@ -1,11 +1,9 @@
-import { join, resolve } from 'node:path'
-import { existsSync } from 'node:fs'
-import { importModule } from 'local-pkg'
-import { getDefaultConfigPrefixes } from './constants'
+import { createConfigLoader } from 'unconfig'
+import { DEFAULT_CONFIG_PREFIXES } from './constants'
 import type { Step } from './types'
 import type { LogLevel, Logger } from './logger'
 import { createLogger } from './logger'
-import { isWindows, randomUniqueKey } from './utils'
+import { randomUniqueKey } from './utils'
 
 export interface UserConfig {
   /**
@@ -114,34 +112,19 @@ export async function getConfig(key?: string, configFile?: string, configRoot?: 
 }
 
 export async function loadConfigFromFile(configFile?: string, configRoot: string = process.cwd()): Promise<UserConfig | UserConfigFn | UserConfigMap | null> {
-  let resolvedPath = ''
-  if (configFile) {
-    resolvedPath = resolve(join(configRoot, configFile))
-  }
-  else {
-    const configFiles = getDefaultConfigPrefixes()
-
-    for (const filename of configFiles) {
-      const filePath = resolve(configRoot, filename)
-      if (!existsSync(filePath))
-        continue
-
-      resolvedPath = filePath
-      break
-    }
-  }
-  if (!resolvedPath)
-    return null
-
-  if (isWindows)
-    resolvedPath = `file:///${resolvedPath.replace(/\\/g, '/')}`
-
-  try {
-    const config = await importModule(resolvedPath)
-    return typeof config.default === 'function' ? config.default() : config.default
-  }
-  catch (error) {
-    createLogger('error').error('Failed to load config file.', { error: error as Error, timestamp: true })
-    return null
-  }
+  const loader = await createConfigLoader<UserConfigExport>({
+    cwd: configRoot,
+    sources: [configFile
+      ? {
+          files: configFile || '',
+          extensions: [],
+        }
+      : {
+          files: DEFAULT_CONFIG_PREFIXES.map(item => `${item}.config`),
+          extensions: ['ts', 'mts', 'cts', 'js', 'mjs', 'cjs', 'json', ''],
+        }],
+  })
+  const result = await loader.load()
+  delete (result.config as any)?.config
+  return result.config
 }

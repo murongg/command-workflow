@@ -40,7 +40,7 @@ describe('describe', () => {
     expect(output3).toThrowError(Error)
     // test null
     const output4 = await loadConfigFromFile()
-    expect(output4).toBe(null)
+    expect(output4).toBe(undefined)
   })
 
   it('test getConfig', async () => {
