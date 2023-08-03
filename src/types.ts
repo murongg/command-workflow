@@ -30,7 +30,7 @@ export interface Step {
    * @param tags
    * @returns
    */
-  before?: (command: string, tags: Record<string, any>) => string | undefined
+  before?: (command: string, tags: Record<string, any>) => string | void
   /**
    * after hook, after executing the command
    * @param command

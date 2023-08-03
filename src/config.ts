@@ -37,8 +37,8 @@ export interface UserConfig {
 export type UserConfigFn = (...args: any[]) => UserConfig | Promise<UserConfig>
 
 export interface UserConfigMap {
-  default: UserConfig | UserConfigFn | null
-  [x: string]: UserConfig | UserConfigFn | null
+  default?: UserConfig | UserConfigFn | void | undefined | null
+  [x: string]: UserConfig | UserConfigFn | void | undefined | null
 }
 export type UserConfigExport = UserConfig | Promise<UserConfig> | UserConfigMap | Promise<UserConfigMap> | UserConfigFn
 
